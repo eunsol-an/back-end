@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.myweb.www.repository.ProductDAO">
+	<sql id="wh_pno">
+		where pno = #{pno}
+	</sql>
+	<insert id="insert" parameterType="pvo">
+		insert into product (category, pname, price, writer, description, made_by)
+		values (#{category}, #{pname}, #{price}, #{writer}, #{description}, #{madeBy})
+	</insert>
+	<select id="selectList" resultType="pvo">
+		select pno, category, pname, price, writer, mod_at, read_count, cmt_qty
+		from product order by pno desc
+	</select>
+	<select id="selectOne" parameterType="long" resultType="pvo">
+		select * from product
+		<include refid="wh_pno"/>
+	</select>
+	<update id="update" parameterType="pvo">
+		update product set 
+		category = #{category}, pname = #{pname}, price = #{price},
+		description = #{description}, made_by = #{madeBy}, mod_at = now()
+		<include refid="wh_pno"/>
+	</update>
+	<delete id="delete" parameterType="long">
+		delete from product
+		<include refid="wh_pno"/>
+	</delete>
+</mapper>
