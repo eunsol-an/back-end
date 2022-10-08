@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.myweb.www.repository.MemberDAO">
+	<sql id="wh_email">
+		where email = #{email}
+	</sql>
+	<insert id="insert" parameterType="mvo">
+		insert into member(email, pwd, nick_name)
+		values (#{email}, #{pwd}, #{nickName})
+	</insert>
+	<select id="selectOne" parameterType="mvo" resultType="mvo">
+		select email, nick_name, last_login, grade
+		from member
+		<include refid="wh_email"/>
+		and pwd = #{pwd}
+	</select>
+	<select id="selectList" resultType="mvo" parameterType="pgvo">
+		select a.email, nick_name, reg_at, last_login, grade
+		from (
+			select email from member order by reg_at desc
+			limit #{pageStart}, #{qty}
+		) a left join member b
+		on a.email = b.email
+	</select>
+	<select id="selectDetail" resultType="mvo" parameterType="string">
+		select * from member <include refid="wh_email"/>
+	</select>
+	<select id="selectEmail" parameterType="string" resultType="int">
+		select count(email) from member
+		<include refid="wh_email"></include>
+	</select>
+	<select id="selectTotalCount" resultType="int">
+		select count(email) from member
+	</select>
+	<update id="update" parameterType="mvo">
+		update member set
+		grade = #{grade}, nick_name = #{nickName}, pwd = #{pwd}
+		<include refid="wh_email"/>
+	</update>
+	<delete id="delete" parameterType="string">
+		delete from member
+		<include refid="wh_email"/>
+	</delete>
+</mapper>
