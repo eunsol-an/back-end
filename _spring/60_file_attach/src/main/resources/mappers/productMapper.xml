@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.myweb.www.repository.ProductDAO">
+	<sql id="wh_pno">
+		where pno = #{pno}
+	</sql>
+	<sql id="search">
+		<if test="type != null">
+		<trim prefix="and (" suffix=")" prefixOverrides="or">
+			<foreach collection="typeToArray" item="type">
+			<trim prefix="or">
+				<choose>
+					<when test="type == 't'.toString()">
+						pname like concat('%', #{kw}, '%')
+					</when>
+					<when test="type == 'w'.toString()">
+						writer like concat('%', #{kw}, '%')
+					</when>	
+					<when test="type == 'c'.toString()">
+						description like concat('%', #{kw}, '%')
+					</when>		
+				</choose>
+			</trim>
+			</foreach>
+		</trim>
+			<!-- <choose>
+				<when test="type == 't'.toString()">
+					and pname like concat('%', #{kw}, '%')
+				</when>
+				<when test="type == 'w'.toString()">
+					and writer like concat('%', #{kw}, '%')
+				</when>
+				<when test="type == 'c'.toString()">
+					and description like concat('%', #{kw}, '%')
+				</when>
+				<when test="type == 'tw'.toString()">
+					and (pname like concat('%', #{kw}, '%') or writer like concat('%', #{kw}, '%'))
+				</when>
+				<when test="type == 'tc'.toString()">
+					and (pname like concat('%', #{kw}, '%') or description like concat('%', #{kw}, '%'))
+				</when>
+				<when test="type == 'wc'.toString()">
+					and (writer like concat('%', #{kw}, '%') or description like concat('%', #{kw}, '%'))
+				</when>
+				<when test="type == 'twc'.toString()">
+					and (pname like concat('%', #{kw}, '%') or writer like concat('%', #{kw}, '%')
+					or description like concat('%', #{kw}, '%'))
+				</when>
+			</choose> -->
+		</if>
+	</sql>
+	<insert id="insert" parameterType="pvo">
+		insert into product (category, pname, price, writer, description, made_by, file_count)
+		values (#{category}, #{pname}, #{price}, #{writer}, #{description}, #{madeBy}, #{fileCount})
+	</insert>
+	<select id="selectList" resultType="pvo" parameterType="pgvo">
+		select a.pno, category, pname, price, writer, mod_at, read_count, cmt_qty, file_count
+		from (
+			select pno from product where pno > 0 
+			<include refid="search" />
+			order by pno desc
+			limit #{pageStart}, #{qty}
+		) a left join product b 
+		on a.pno = b.pno
+	</select>
+	<select id="selectOne" parameterType="long" resultType="pvo">
+		select * from product
+		<include refid="wh_pno"/>
+	</select>
+	<select id="selectTotalCount" resultType="int" parameterType="pgvo">
+		select count(pno) from product where pno > 0
+		<include refid="search" />
+	</select>
+	<select id="selectLastPno" resultType="long">
+		select max(pno) from product
+	</select>
+	<update id="update" parameterType="pvo">
+		update product set 
+		category = #{category}, pname = #{pname}, price = #{price},
+		description = #{description}, made_by = #{madeBy}, file_count = #{fileCount}, mod_at = now()
+		<include refid="wh_pno"/>
+	</update>
+	<delete id="delete" parameterType="long">
+		delete from product
+		<include refid="wh_pno"/>
+	</delete>
+</mapper>

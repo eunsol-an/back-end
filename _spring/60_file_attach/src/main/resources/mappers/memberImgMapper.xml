@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.myweb.www.repository.MemberImgDAO">
+	<insert id="insertImg" parameterType="fvo">
+		insert into member_img 
+		(uuid, save_dir, file_name, email, file_size)
+		values (#{uuid}, #{saveDir}, #{fileName}, #{email}, #{fileSize})
+	</insert>
+	<select id="selectImg" parameterType="string" resultType="fvo">
+		select * from member_img where email = #{email}
+	</select>
+	<delete id="deleteImg" parameterType="string">
+		delete from member_img where uuid = #{uuid}
+	</delete>
+	<delete id="deleteAllImg" parameterType="string">
+		delete from member_img where email = #{email}
+	</delete>
+</mapper>
