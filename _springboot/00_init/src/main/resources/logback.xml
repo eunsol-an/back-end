@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="true">
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%d %5p [%c] - %msg%n</pattern>
+    </encoder>
+  </appender>
+  
+  <appender name="console-info" class="ch.qos.logback.core.ConsoleAppender">
+  	<encoder>
+  		<pattern>%d %5p >>> %msg%n</pattern>
+  	</encoder>
+  </appender>
+  
+  <logger name="com.myweb.board" level="DEBUG" appender-ref="STDOUT"/>
+  <logger name="jdbc.sqlonly" level="INFO" appender-ref="console-info"/>
+  <logger name="jdbc.resultsettable" level="INFO" appender-ref="console-info"/>
+  <logger name="org.springframework" level="ERROR"/>
+  <logger name="org.springframework.jdbc" level="ERROR"/>
+
+  <root level="ERROR">
+    <appender-ref ref="STDOUT" />
+  </root>
+</configuration>
