@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" th:href="@{/dist/css/bootstrap.min.css}">
+</head>
+<body>
+    <div class="container mt-3">
+        <h2>Board Detail</h2>
+        <form method="post" id="myForm">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Property</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>BNO</th>
+                        <td th:text="${bvo.bno}"></td>
+                    </tr>
+                    <tr>
+                        <th>REGDATE</th>
+                        <td th:text="${bvo.regdate}"></td>
+                    </tr>
+                    <tr>
+                        <th>READCOUNT</th>
+                        <td th:text="${bvo.readcount}"></td>
+                    </tr>
+                    <tr>
+                        <th>MODDATE</th>
+                        <td th:text="${bvo.moddate}"></td>
+                    </tr>
+                    <tr>
+                        <th>MOD ID</th>
+                        <td th:text="${bvo.modid}"></td>
+                    </tr>
+                    <tr>
+                        <th>TITLE</th>
+                        <td>
+                            <input type="text" class="form-control" name="title" th:value="${bvo.title}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>REG ID</th>
+                        <td>
+                            <input type="text" class="form-control" name="regid" th:value="${bvo.regid}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>CONTENT</th>
+                        <td>
+                            <textarea name="content" class="form-control" th:text="${bvo.content}"></textarea>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <input type="hidden" name="bno" th:value="${bvo.bno}">
+        </form>
+        <button type="button" id="list" class="btn btn-primary">LIST</button>
+        <button type="button" id="mod" class="btn btn-outline-warning">MOD</button>
+        <button type="button" id="del" class="btn btn-outline-danger">DEL</button>
+    </div>
+    <script>
+        document.getElementById('list').addEventListener('click', (e) => {
+            location.replace('/board/list');
+        });
+        document.getElementById('mod').addEventListener('click', (e) => {
+            let myForm = document.getElementById('myForm');
+            myForm.setAttribute('action', '/board/modify');
+            myForm.submit();
+        });
+        document.getElementById('del').addEventListener('click', (e) => {
+            let myForm = document.getElementById('myForm');
+            myForm.setAttribute('action', '/board/remove');
+            myForm.submit();
+        });
+    </script>
+</body>
+</html>
