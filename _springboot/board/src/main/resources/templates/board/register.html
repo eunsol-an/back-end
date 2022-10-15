@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" th:href="@{/dist/css/bootstrap.min.css}">
+</head>
+<body>
+    <div class="container mt-3">
+        <h2>Board Register</h2>
+        <form action="/board/register" method="post">
+            <div class="mb-3 mt-3">
+              <label for="title">Title:</label>
+              <input type="text" class="form-control" id="title" placeholder="Enter title" name="title">
+            </div>
+            <div class="mb-3">
+              <label for="regid">Reg Id:</label>
+              <input type="text" class="form-control" id="regid" placeholder="Enter regid" name="regid">
+            </div>
+            <div class="mb-3">
+                <label for="content">Content:</label>
+                <textarea class="form-control" id="content" name="content" placeholder="Enter content"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+    </div>
+</body>
+</html>
